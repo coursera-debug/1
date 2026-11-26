@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Introduction to Cloud Computing - Coursera Certificate Clone</title>
+  <style>
+    :root {
+      --bg-page: #ffffff;
+      --bg-subtle: #f5f7f8;
+      --bg-dark: #1f1f1f;
+      --text-primary: #1f1f1f;
+      --text-secondary: #4a4a4a;
+      --text-muted: #6e767d;
+      --brand-blue: #0056d2;
+      --brand-blue-hover: #00419e;
+      --border-light: #e5e7eb;
+      --badge-bg: #f0f2f5;
+      --avatar-orange: #c84b28;
+      --shadow-card: 0 2px 10px rgba(0, 0, 0, 0.06);
+      --shadow-cert: 0 4px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      line-height: 1.5;
+      overflow-x: clip;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    /* Top Audience Bar */
+    .top-audience-bar {
+      background-color: var(--bg-dark);
+      color: #d1d5db;
+      font-size: 12px;
+      padding: 0 40px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .top-audience-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .top-audience-bar a {
+      height: 100%;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 4px;
+      border-bottom: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .top-audience-bar a.active,
+    .top-audience-bar a:hover {
+      color: #ffffff;
+      border-bottom-color: #ffffff;
+      font-weight: 600;
+    }
+
+    /* Main Navbar */
+    .navbar {
+      background-color: #ffffff;
+      border-bottom: 1px solid var(--border-light);
+      padding: 12px 40px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      color: var(--brand-blue);
+      flex-shrink: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .nav-link-btn {
+      background: none;
+      border: none;
+      font-size: 13px;
+      color: var(--text-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 4px;
+      white-space: nowrap;
+      min-height: 36px;
+    }
+
+    .nav-link-btn:hover {
+      color: var(--brand-blue);
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      border: 1px solid #8b959e;
+      border-radius: 999px;
+      padding: 3px 4px 3px 16px;
+      max-width: 340px;
+      width: 100%;
+      background: #fff;
+      min-width: 180px;
+    }
+
+    .search-box input {
+      border: none;
+      outline: none;
+      font-size: 14px;
+      width: 100%;
+      color: var(--text-primary);
+      background: transparent;
+      min-width: 0;
+    }
+
+    .search-box input::placeholder {
+      color: #7c858e;
+    }
+
+    .search-btn {
+      background-color: var(--brand-blue);
+      color: #ffffff;
+      border: none;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .search-btn:hover {
+      background-color: var(--brand-blue-hover);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+      flex-shrink: 0;
+    }
+
+    .icon-btn {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+    }
+
+    .icon-btn:hover {
+      background-color: var(--bg-subtle);
+      color: var(--text-primary);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: 1px solid var(--border-light);
+      border-radius: 6px;
+      width: 38px;
+      height: 38px;
+      font-size: 18px;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-primary);
+      flex-shrink: 0;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 28px 24px 64px;
+    }
+
+    .breadcrumb {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .breadcrumb a {
+      color: var(--brand-blue);
+    }
+
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+
+    .page-title {
+      font-size: clamp(22px, 3vw, 28px);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 24px;
+      letter-spacing: -0.3px;
+    }
+
+    /* Two-Column PC Layout */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    /* Left Column: Learner Summary Card */
+    .learner-card {
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      padding: 24px;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+
+    .avatar-circle {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background-color: var(--avatar-orange);
+      color: #ffffff;
+      font-size: 28px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .learner-meta {
+      min-width: 0;
+    }
+
+    .learner-meta h2 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .meta-line {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 2px;
+    }
+
+    .grade-line {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-top: 6px;
+      margin-bottom: 12px;
+    }
+
+    .verification-note {
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      line-height: 1.45;
+    }
+
+    .verification-note a {
+      color: var(--brand-blue);
+      text-decoration: underline;
+    }
+
+    /* Course Provider & Rating */
+    .provider-block {
+      margin-bottom: 22px;
+      padding-left: 4px;
+    }
+
+    .provider-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .ibm-wordmark {
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: #1f1f1f;
+      line-height: 1;
+      margin-bottom: 8px;
+      font-family: "Arial Black", Impact, sans-serif;
+    }
+
+    .rating-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .stars {
+      color: #d97706;
+      letter-spacing: -1px;
+      font-size: 13px;
+    }
+
+    /* What You Will Learn */
+    .section-heading {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    .outcomes-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 20px;
+      margin-bottom: 24px;
+    }
+
+    .outcome-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.45;
+    }
+
+    .check-icon {
+      color: var(--text-secondary);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* Skills Pills */
+    .skills-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .skill-pill {
+      background-color: var(--badge-bg);
+      color: var(--text-secondary);
+      font-size: 11.5px;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    /* Right Column: Static Certificate Image */
+    .cert-column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .certificate-frame {
+      width: 100%;
+      background: #f9fafb;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      padding: 14px;
+      box-shadow: var(--shadow-cert);
+    }
+
+    .certificate-image {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid #e5e7eb;
+      background-color: #ffffff;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    /* Certificate Action Buttons */
+    .cert-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+      width: 100%;
+    }
+
+    .btn-primary {
+      background-color: var(--brand-blue);
+      color: #ffffff;
+      border: 1px solid var(--brand-blue);
+      border-radius: 4px;
+      padding: 10px 16px;
+      min-height: 42px;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      flex: 1 1 160px;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--brand-blue-hover);
+    }
+
+    .btn-outline {
+      background-color: #ffffff;
+      color: var(--brand-blue);
+      border: 1px solid var(--brand-blue);
+      border-radius: 4px;
+      padding: 10px 16px;
+      min-height: 42px;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      flex: 1 1 160px;
+    }
+
+    .btn-outline:hover {
+      background-color: #f0f6ff;
+    }
+
+    /* Footer */
+    .site-footer {
+      background-color: var(--bg-subtle);
+      border-top: 1px solid var(--border-light);
+      padding: 44px 40px;
+      margin-top: 48px;
+    }
+
+    .footer-grid {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 28px;
+    }
+
+    .footer-col h4 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      color: var(--text-primary);
+    }
+
+    .footer-col ul {
+      list-style: none;
+    }
+
+    .footer-col li {
+      margin-bottom: 8px;
+      font-size: 12.5px;
+      color: var(--text-secondary);
+    }
+
+    .footer-col li a {
+      display: inline-block;
+      padding: 2px 0;
+    }
+
+    .footer-col li a:hover {
+      text-decoration: underline;
+    }
+
+    .app-badge-box {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #111827;
+      color: #ffffff;
+      font-size: 12px;
+      padding: 10px 14px;
+      min-height: 40px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      left: auto;
+      max-width: calc(100vw - 32px);
+      background-color: #1f1f1f;
+      color: #ffffff;
+      padding: 12px 18px;
+      border-radius: 6px;
+      font-size: 13px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.2s, transform 0.2s;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Tablet Breakpoint */
+    @media (max-width: 900px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+
+      .cert-column {
+        order: -1;
+      }
+
+      .navbar {
+        padding: 12px 20px;
+      }
+
+      .top-audience-bar {
+        padding: 0 20px;
+      }
+
+      .site-footer {
+        padding: 36px 24px;
+      }
+    }
+
+    /* Mobile Breakpoint */
+    @media (max-width: 640px) {
+      .top-audience-bar {
+        padding: 0 14px;
+        gap: 14px;
+        font-size: 11.5px;
+      }
+
+      .navbar {
+        padding: 10px 14px;
+      }
+
+      .nav-left {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .logo {
+        font-size: 24px;
+      }
+
+      .mobile-menu-btn {
+        display: inline-flex;
+        margin-left: auto;
+      }
+
+      .nav-right {
+        display: none;
+      }
+
+      .nav-links {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        padding: 8px 0 4px;
+        border-top: 1px solid var(--border-light);
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-link-btn {
+        width: 100%;
+        justify-content: flex-start;
+        padding: 8px 4px;
+        min-height: 42px;
+      }
+
+      .search-box {
+        order: 4;
+        max-width: 100%;
+        flex-basis: 100%;
+        margin-top: 2px;
+      }
+
+      .container {
+        padding: 18px 14px 48px;
+      }
+
+      .page-title {
+        margin-bottom: 16px;
+      }
+
+      .learner-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 18px 16px;
+        gap: 14px;
+      }
+
+      .outcomes-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .certificate-frame {
+        padding: 8px;
+      }
+
+      .cert-actions {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .btn-primary,
+      .btn-outline {
+        width: 100%;
+        flex: none;
+      }
+
+      .site-footer {
+        padding: 28px 16px;
+        margin-top: 32px;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      .toast {
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Audience Bar -->
+  <div class="top-audience-bar" role="navigation" aria-label="Audience selection">
+    <a href="#individuals" class="active" data-audience="For Individuals">For Individuals</a>
+    <a href="#businesses" data-audience="For Businesses">For Businesses</a>
+    <a href="#universities" data-audience="For Universities">For Universities</a>
+    <a href="#governments" data-audience="For Governments">For Governments</a>
+  </div>
+
+  <!-- Main Header Navigation -->
+  <header class="navbar">
+    <div class="nav-left">
+      <a href="#home" class="logo">coursera</a>
+
+      <button
+        type="button"
+        class="mobile-menu-btn"
+        id="mobileMenuBtn"
+        aria-label="Toggle navigation menu"
+        aria-expanded="false"
+        aria-controls="navLinks"
+      >
+        ☰
+      </button>
+
+      <nav class="nav-links" id="navLinks" aria-label="Primary navigation">
+        <button type="button" class="nav-link-btn" id="exploreBtn">Explore ▾</button>
+        <a href="#my-learning" class="nav-link-btn">My Learning</a>
+        <a href="#degrees" class="nav-link-btn">Degrees</a>
+      </nav>
+
+      <form class="search-box" id="searchForm">
+        <input type="text" id="searchInput" placeholder="What do you want to learn?" aria-label="What do you want to learn?" />
+        <button type="submit" class="search-btn" aria-label="Search">🔍</button>
+      </form>
+    </div>
+
+    <div class="nav-right">
+      <button type="button" class="icon-btn" title="Notifications" aria-label="Notifications">🔔</button>
+      <button type="button" class="icon-btn" title="Help" aria-label="Help">❓</button>
+      <button type="button" class="icon-btn" title="Profile" aria-label="Profile">👤</button>
+      <button type="button" class="icon-btn" title="Settings" aria-label="Settings">⚙️</button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="#home">Home</a>
+      <span>&gt;</span>
+      <a href="#certificate">Course Certificate</a>
+    </nav>
+
+    <h1 class="page-title">Introduction to Cloud Computing</h1>
+
+    <div class="main-grid">
+      <!-- Left Column -->
+      <div>
+        <section class="learner-card" aria-label="Learner completion details">
+          <div class="avatar-circle" aria-hidden="true">O</div>
+          <div class="learner-meta">
+            <h2>Completed by Omkar Chowdhury</h2>
+            <p class="meta-line">August 22, 2024</p>
+            <p class="meta-line">12 hours (approximately)</p>
+            <p class="grade-line">Grade Achieved: 92%</p>
+            <p class="verification-note">
+              Omkar Chowdhury's account is verified. Coursera certifies their successful completion of
+              <a href="#course-overview">Introduction to Cloud Computing</a>
+            </p>
+          </div>
+        </section>
+
+        <section class="provider-block" aria-label="Course provider and rating">
+          <p class="provider-title">Introduction to Cloud Computing</p>
+          <div class="ibm-wordmark">IBM</div>
+          <div class="rating-row">
+            <span class="stars" aria-label="4.5 out of 5 stars">★★★★☆</span>
+            <span>4.5 (7,620 ratings) | 4,63,199 already enrolled</span>
+          </div>
+        </section>
+
+        <section aria-label="What you will learn">
+          <h3 class="section-heading">What you will learn</h3>
+          <div class="outcomes-grid">
+            <div class="outcome-item">
+              <span class="check-icon">✓</span>
+              <span>Define cloud computing and explain essential characteristics, history, the business case for cloud, and the emerging technologies enabled by cloud</span>
+            </div>
+            <div class="outcome-item">
+              <span class="check-icon">✓</span>
+              <span>Describe the cloud service models - IaaS, PaaS, SaaS, and cloud deployment models - Public, Private, Hybrid; explain cloud infrastructure components</span>
+            </div>
+            <div class="outcome-item">
+              <span class="check-icon">✓</span>
+              <span>Explain emerging Cloud related trends including HybridMulticloud, Microservices, Serverless, Cloud Native, DevOps, and Application Modernization</span>
+            </div>
+            <div class="outcome-item">
+              <span class="check-icon">✓</span>
+              <span>List and describe services of popular cloud platforms including AWS, Microsoft Azure, Google Cloud, IBM Cloud, Alibaba Cloud, and others</span>
+            </div>
+          </div>
+        </section>
+
+        <section aria-label="Skills you will gain">
+          <h3 class="section-heading">Skills you will gain</h3>
+          <div class="skills-wrap" id="skillsContainer"></div>
+        </section>
+      </div>
+
+      <!-- Right Column: Static Certificate Image -->
+      <div class="cert-column">
+        <div class="certificate-frame" id="certificatePreview">
+          <img
+            id="certificateImg"
+            class="certificate-image"
+            alt="Coursera Course Certificate for Omkar Chowdhury - Introduction to Cloud Computing by IBM"
+            src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22900%22%20height%3D%22620%22%20viewBox%3D%220%200%20900%20620%22%3E%3Crect%20width%3D%22900%22%20height%3D%22620%22%20fill%3D%22%23ffffff%22%2F%3E%3Crect%20x%3D%22620%22%20y%3D%220%22%20width%3D%22280%22%20height%3D%22620%22%20fill%3D%22%23eef2f6%22%2F%3E%3Cline%20x1%3D%22620%22%20y1%3D%220%22%20x2%3D%22620%22%20y2%3D%22620%22%20stroke%3D%22%23cbd5e1%22%20stroke-width%3D%222%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%2280%22%20font-family%3D%22Arial%20Black%2C%20sans-serif%22%20font-size%3D%2234%22%20font-weight%3D%22900%22%20fill%3D%22%23111827%22%3EIBM%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22145%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2216%22%20fill%3D%22%236b7280%22%3EAug%2022%2C%202024%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22195%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2238%22%20font-weight%3D%22700%22%20fill%3D%22%23111827%22%3EOmkar%20Chowdhury%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22235%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2216%22%20fill%3D%22%236b7280%22%3Ehas%20successfully%20completed%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22275%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2224%22%20font-weight%3D%22700%22%20fill%3D%22%23111827%22%3EIntroduction%20to%20Cloud%20Computing%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22310%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2215%22%20fill%3D%22%236b7280%22%3Ean%20online%20non-credit%20course%20authorized%20by%20IBM%20and%20offered%20through%20Coursera%3C%2Ftext%3E%3Cline%20x1%3D%2260%22%20y1%3D%22450%22%20x2%3D%22560%22%20y2%3D%22450%22%20stroke%3D%22%23e5e7eb%22%20stroke-width%3D%222%22%2F%3E%3Ctext%20x%3D%2260%22%20y%3D%22490%22%20font-family%3D%22Georgia%2C%20serif%22%20font-style%3D%22italic%22%20font-size%3D%2224%22%20fill%3D%22%231f2937%22%3EAntonio%20Caruso%3C%2Ftext%3E%3Ctext%20x%3D%2260%22%20y%3D%22515%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2213%22%20fill%3D%22%236b7280%22%3EIBM%20Program%20Director%20%E2%80%A2%20Cloud%20Computing%3C%2Ftext%3E%3Ctext%20x%3D%22760%22%20y%3D%2290%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2218%22%20font-weight%3D%22700%22%20fill%3D%22%23334155%22%3ECOURSE%3C%2Ftext%3E%3Ctext%20x%3D%22760%22%20y%3D%22114%22%20text-anchor%22%3D%22middle%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2218%22%20font-weight%3D%22700%22%20fill%3D%22%23334155%22%3ECERTIFICATE%3C%2Ftext%3E%3Ccircle%20cx%3D%22760%22%20cy%3D%22290%22%20r%3D%2268%22%20fill%3D%22%23ffffff%22%20stroke%3D%22%2394a3b8%22%20stroke-width%3D%224%22%2F%3E%3Ctext%20x%3D%22760%22%20y%3D%22285%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2220%22%20font-weight%3D%22800%22%20fill%3D%22%230056d2%22%3Ecoursera%3C%2Ftext%3E%3Ctext%20x%3D%22760%22%20y%3D%22310%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2211%22%20fill%3D%22%2364748b%22%3EVERIFIED%3C%2Ftext%3E%3Ctext%20x%3D%22760%22%20y%3D%22540%22%20text-anchor%3D%22middle%22%20font-family%3D%22Arial%2C%20sans-serif%22%20font-size%3D%2212%22%20fill%3D%22%2364748b%22%3EVerify%20at%20coursera.org%2Fverify%3C%2Ftext%3E%3C%2Fsvg%3E"
+          />
+        </div>
+
+        <div class="cert-actions">
+          <button type="button" class="btn-primary" id="shareCertBtn">
+            <span>↗</span>
+            <span>Share Certificate</span>
+          </button>
+          <button type="button" class="btn-outline" id="downloadCertBtn">
+            <span>↓</span>
+            <span>Download Certificate</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Coursera</h4>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#leadership">Leadership</a></li>
+          <li><a href="#careers">Careers</a></li>
+          <li><a href="#catalog">Catalog</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Community</h4>
+        <ul>
+          <li><a href="#learners">Learners</a></li>
+          <li><a href="#partners">Partners</a></li>
+          <li><a href="#beta">Beta Testers</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>More</h4>
+        <ul>
+          <li><a href="#press">Press</a></li>
+          <li><a href="#investors">Investors</a></li>
+          <li><a href="#terms">Terms</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Mobile App</h4>
+        <div class="app-badge-box">Get it on Mobile</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const skillsList = [
+      "Infrastructure As A Service (IaaS)",
+      "Cloud Deployment",
+      "DevOps",
+      "Cloud Computing Architecture",
+      "Public Cloud",
+      "Cloud Computing",
+      "Data Storage Technologies",
+      "Cloud Services",
+      "Data Storage",
+      "Containerization",
+      "IBM Cloud",
+      "Cloud Development"
+    ];
+
+    const skillsContainer = document.getElementById("skillsContainer");
+    skillsList.forEach((skill) => {
+      const span = document.createElement("span");
+      span.className = "skill-pill";
+      span.textContent = skill;
+      skillsContainer.appendChild(span);
+    });
+
+    const toastEl = document.getElementById("toast");
+    let toastTimer;
+
+    function showToast(message) {
+      toastEl.textContent = message;
+      toastEl.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toastEl.classList.remove("show");
+      }, 2800);
+    }
+
+    // Mobile navigation drawer toggle
+    const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+    const navLinks = document.getElementById("navLinks");
+
+    mobileMenuBtn.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+      mobileMenuBtn.setAttribute("aria-expanded", String(isOpen));
+      mobileMenuBtn.textContent = isOpen ? "✕" : "☰";
+    });
+
+    // Audience bar active state
+    document.querySelectorAll(".top-audience-bar a").forEach((link) => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        document.querySelectorAll(".top-audience-bar a").forEach((el) => el.classList.remove("active"));
+        link.classList.add("active");
+        showToast(`Switched view to ${link.dataset.audience}`);
+      });
+    });
+
+    // Search form handler
+    document.getElementById("searchForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const query = document.getElementById("searchInput").value.trim();
+      if (query) {
+        showToast(`Searching courses for "${query}"...`);
+      } else {
+        showToast("Enter a topic or skill to search.");
+      }
+    });
+
+    // Share Certificate button
+    document.getElementById("shareCertBtn").addEventListener("click", async () => {
+      const shareUrl = window.location.href;
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(shareUrl);
+        }
+        showToast("Certificate link copied to clipboard!");
+      } catch {
+        showToast("Ready to share certificate link.");
+      }
+    });
+
+    // Download static certificate image
+    document.getElementById("downloadCertBtn").addEventListener("click", () => {
+      const certImg = document.getElementById("certificateImg");
+      const a = document.createElement("a");
+      a.href = certImg.src;
+      a.download = "Omkar-Chowdhury-Introduction-to-Cloud-Computing-Certificate.svg";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast("Certificate image downloaded!");
+    });
+  </script>
+</body>
+</html>
